@@ -29,9 +29,10 @@ def sendTokens(multisig, token):
 	ADDRESS2 = '0x33A4622B82D4c04a53e170c638B944ce27cffce3'
 	PRIVATE_KEY2 = '0x804365e293b9fab9bd11bddd39082396d56d30779efbb3ffb0a6089027902c4a'
 
-	ABI = json.load(open('DssCdpManager.json','r'))
+	ABI = json.load(open('scripts/TokenERC20.json','r'))
 	contractaddress = Web3.toChecksumAddress("0x5ef30b9986345249bc32d8928b7ee64de9435e39")
-	DssCdpManager = web3.eth.contract(abi=ABI, address=contractaddress)
+	token = web3.eth.contract(abi=ABI, address=contractaddress)
+	
 	ABI = json.load(open('scripts/MultiSigWallet.json','r'))
 	contractaddress = Web3.toChecksumAddress(multisig)
 	multisig = web3.eth.contract(abi=ABI, address=contractaddress)
