@@ -1,7 +1,7 @@
 # ganache-cli --port 8546 --hostname 192.168.1.200 --gasLimit 12000000 --accounts 10 --hardfork istanbul --mnemonic brownie --fork http://192.168.1.4:3334
 # brownie run deployer.py --network forkd
 import json
-from brownie import TokenERC20, Contract, accounts, MultiSigWallet, UpgradeabilityProxy, AdminUpgradeabilityProxy 
+from brownie import TokenERC20, Contract, accounts, MultiSigWallet, UpgradeabilityProxy
 from web3 import Web3
 	
 def createnew():
@@ -10,8 +10,6 @@ def createnew():
 
 	implementation = TokenERC20.deploy({'from':accounts[0]})
 	proxy = UpgradeabilityProxy.deploy(implementation.address, "", {'from':accounts[0]})
-	#proxy = AdminUpgradeabilityProxy.deploy(implementation.address, multisig.address, "", {'from':accounts[0]})
-	
 	upgradable = Contract.from_abi('TokenERC20', proxy.address, TokenERC20.abi)
 
 	upgradable.initialize(multisig.address, 100, 'xToken', 'XTK', {'from':accounts[0]})
@@ -30,9 +28,8 @@ def sendTokens(multisig, token):
 	PRIVATE_KEY2 = '0x804365e293b9fab9bd11bddd39082396d56d30779efbb3ffb0a6089027902c4a'
 
 	ABI = json.load(open('scripts/TokenERC20.json','r'))
-	contractaddress = Web3.toChecksumAddress("0x5ef30b9986345249bc32d8928b7ee64de9435e39")
+	contractaddress = Web3.toChecksumAddress(token)
 	token = web3.eth.contract(abi=ABI, address=contractaddress)
-	
 	ABI = json.load(open('scripts/MultiSigWallet.json','r'))
 	contractaddress = Web3.toChecksumAddress(multisig)
 	multisig = web3.eth.contract(abi=ABI, address=contractaddress)
